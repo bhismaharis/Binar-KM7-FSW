@@ -5,91 +5,104 @@ class App {
     this.driver = document.getElementById("driver");
     this.date = document.getElementById("date");
     this.time = document.getElementById("time");
-    this.passenger = document.getElementById("passenger");    
-    //toggle disable button
-    this.driver.addEventListener("change", this.toggleButton);
-    this.date.addEventListener("change", this.toggleButton);
-    this.time.addEventListener("change", this.toggleButton);
+    this.passenger = document.getElementById("passenger");
+
+    // Toggle disable button saat input berubah
+    [this.driver, this.date, this.time, this.passenger].forEach((input) => {
+      input.addEventListener("change", this.toggleButton);
+    });
   }
 
   async init() {
-    await this.load();
-    this.loadButton.onclick = (e) => {
+    await this.load(); // Memuat data mobil dari Binar.listCars()
+    this.loadButton.addEventListener("click", (e) => {
       e.preventDefault();
-      this.run();
-    };
+      this.run(); // Jalankan pencarian ketika tombol ditekan
+    });
   }
 
+  // Fungsi untuk mengaktifkan/menonaktifkan tombol load berdasarkan input
   toggleButton = () => {
-    const isDriverSelected = this.driver.value !== "";
+    const isDriverSelected = this.driver.value !== "default";
     const isDateFilled = this.date.value !== "";
     const isTimeFilled = this.time.value !== "";
+    const isPassengerFilled = this.passenger.value !== "";
 
-    this.loadButton.disabled = !(isDriverSelected && isDateFilled && isTimeFilled);
+    this.loadButton.disabled = !(
+      isDriverSelected &&
+      isDateFilled &&
+      isTimeFilled &&
+      isPassengerFilled
+    );
   };
 
   run = () => {
-    this.clear();
+    this.clear(); // Bersihkan hasil sebelumnya
     const driver = this.driver.value;
     const date = this.date.value;
     const time = this.time.value;
     const passenger = this.passenger.value;
-    const currentDateTime = new Date();
+    const selectedDateTime = new Date(`${date}T${time}`); // Gabung tanggal dan waktu pengguna
+    const currentDateTime = new Date(); // Waktu sekarang
 
-    //  loading
-    const loadingNode = document.createElement("div");
-    loadingNode.innerHTML =
-      '<h3 class="text-center my-5">Mencari kendaraan...</h3>';
-    this.carContainerElement.appendChild(loadingNode);
+    // Tampilkan loading
+    this.showLoadingMessage();
 
     setTimeout(() => {
       const filteredCars = Car.list.filter((car) => {
-        // Filter berdasarkan tipe driver
+        // Filter berdasarkan driver availability
         if (driver !== "default") {
           if (driver === "true" && !car.available) return false;
           if (driver === "false" && car.available) return false;
         }
 
-        // Filter berdasarkan tanggal
-        if (date) {
-          const selectedDateTime = new Date(date + "T" + time);
-          if (selectedDateTime < currentDateTime) return false;
-          if (new Date(car.availableAt) > selectedDateTime) return false;
-        }
+        // Filter berdasarkan waktu dan tanggal
+        const carAvailableAt = new Date(car.availableAt);
+        if (selectedDateTime < currentDateTime) return false; // Tidak bisa memesan waktu yang sudah lewat
+        if (carAvailableAt > selectedDateTime) return false; // Mobil tidak tersedia setelah waktu yang dipilih
 
-        // Filter berdasarkan jumlah penumpang
-        if (passenger && car.capacity < parseInt(passenger))
-          return false;
+        // Filter berdasarkan kapasitas penumpang
+        if (passenger && car.capacity < parseInt(passenger)) return false;
 
         return true;
-      },2000);
+      });
 
-      this.clear();
-
-      if (filteredCars.length > 0) {
-        filteredCars.forEach((car) => {
-          this.carContainerElement.innerHTML += car.render();
-        });
-      } else {
-        const noResultNode = document.createElement("div");
-        noResultNode.innerHTML =
-          '<h3 class="text-center my-5">Kendaraan tidak tersedia</h3>';
-        this.carContainerElement.appendChild(noResultNode);
-      }
+      this.displayResults(filteredCars);
     }, 1000);
   };
 
+  // Memuat data mobil dari Binar.listCars() dan menginisialisasi Car
   async load() {
     const cars = await Binar.listCars();
     Car.init(cars);
   }
 
+  // Bersihkan container hasil pencarian
   clear = () => {
-    let child = this.carContainerElement.firstElementChild;
-
-    while (child) {
-      child.remove();
-      child = this.carContainerElement.firstElementChild;
-    }
+    this.carContainerElement.innerHTML = "";
   };
+
+  // Tampilkan pesan loading
+  showLoadingMessage() {
+    const loadingMessage = document.createElement("div");
+    loadingMessage.innerHTML =
+      '<h3 class="text-center my-5">Mencari kendaraan...</h3>';
+    this.carContainerElement.appendChild(loadingMessage);
+  }
+
+  // Tampilkan hasil filter atau pesan jika tidak ada hasil
+  displayResults(filteredCars) {
+    this.clear();
+
+    if (filteredCars.length > 0) {
+      filteredCars.forEach((car) => {
+        this.carContainerElement.innerHTML += car.render();
+      });
+    } else {
+      const noCarsMessage = document.createElement("div");
+      noCarsMessage.innerHTML =
+        '<h3 class="text-center my-5">Kendaraan tidak tersedia</h3>';
+      this.carContainerElement.appendChild(noCarsMessage);
+    }
+  }
 }
