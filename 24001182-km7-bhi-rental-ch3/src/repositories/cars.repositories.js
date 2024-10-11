@@ -63,8 +63,10 @@ exports.updateCar = (id, data) => {
         throw new NotFoundError("Car is Not Found!");
     }
 
+    Object.assign(cars[index], data);
+
     fs.writeFileSync("./data/cars.json", JSON.stringify(cars, null, 2));
-    return index;
+    return cars[index];
 };
 
 exports.deleteCarById = (id) => {

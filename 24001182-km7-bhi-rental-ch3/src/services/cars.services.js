@@ -29,7 +29,7 @@ exports.createCar = async (data, files) => {
     return carsRepository.createCar(data);
 };
 
-exports.updateCar = async (id, data) => {
+exports.updateCar = async (id, data, files) => {
     const existingCar = carsRepository.getCarById(id);
     if (!existingCar) {
         throw new NotFoundError("Car is Not Found!");
@@ -40,14 +40,14 @@ exports.updateCar = async (id, data) => {
         ...data,
     };
 
-    let file = data?.image;
+    // let file = files?.image;
 
-    if (file == null) {
-        file = { filename: null };
+    if (files == null) {
+        data = { filename: null };
     }
 
-    if (file?.image) {
-        data.image = await imageUpload(file.image);
+    if (files?.image) {
+        data.image = await imageUpload(files.image);
     }
 
     const updatedCar = carsRepository.updateCar(id, data);

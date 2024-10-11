@@ -18,13 +18,15 @@ exports.getCarById = async (req, res) => {
 };
 
 exports.createCar = async (req, res) => {
-    const data = await carServices.createCar(req.body, req.files?.image);
+    const { body, files } = req;
+    const data = await carServices.createCar(body, files);
     successResponse(res, data);
 };
 
 exports.updateCar = async (req, res) => {
     const { id } = req.params;
-    const data = await carServices.updateCar(id, req.body, req.files);
+    const { body, files } = req;
+    const data = await carServices.updateCar(id, body, files);
     successResponse(res, data);
 };
 

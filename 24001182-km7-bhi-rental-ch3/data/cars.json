@@ -801,27 +801,5 @@
       "Remote fuel lid release",
       "Traveler/mini trip computer"
     ]
-  },
-  {
-    "id": "6d5db907-957a-453c-8b79-e5cdc6449630",
-    "plate": "p 1564 jkw",
-    "manufacture": "data",
-    "model": "data",
-    "rentPerDay": 10000,
-    "capacity": 4,
-    "description": "data",
-    "availableAt": "2024-03-23T15:49:05.563Z",
-    "transmission": "data",
-    "available": true,
-    "type": "data",
-    "year": 2024,
-    "options": [
-      "data",
-      "data"
-    ],
-    "specs": [
-      "data",
-      "data"
-    ]
   }
 ]
