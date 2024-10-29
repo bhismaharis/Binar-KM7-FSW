@@ -13,18 +13,19 @@ const {
     createType,
     updateType,
 } = require("../controllers/types.controllers");
+const { authorizations } = require("../middlewares/auth.middlewares");
 
 const router = express.Router();
 
 router
     .route("/")
-    .get(validateGetTypes, getTypes)
-    .post(validateCreateType, createType);
+    .get(authorizations(1, 2, 3), validateGetTypes, getTypes)
+    .post(authorizations(1, 2), validateCreateType, createType);
 
 router
     .route("/:id")
-    .get(validateGetTypeById, getTypeById)
-    .put(validateUpdateType, updateType)
-    .delete(validateDeleteTypeById, deleteTypeById);
+    .get(authorizations(1, 2, 3), validateGetTypeById, getTypeById)
+    .delete(authorizations(1, 2), validateDeleteTypeById, deleteTypeById)
+    .put(authorizations(1, 2), validateUpdateType, updateType);
 
 module.exports = router;

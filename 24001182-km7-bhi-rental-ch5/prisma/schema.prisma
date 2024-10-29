@@ -44,3 +44,11 @@ model types {
   description String?
   cars        cars[]
 }
+
+model users {
+  id       BigInt @default(autoincrement())
+  username String @db.VarChar
+  email    String @unique(map: "users_email_idx") @db.VarChar
+  password String @db.VarChar
+  role_id  Int    @default(3)
+}

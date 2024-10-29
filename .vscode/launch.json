@@ -8,16 +8,21 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
+            "skipFiles": ["<node_internals>/**"],
             // "program": "${workspaceFolder}/Chapter-3/Topik1_ExpressJS/index.js",
             "cwd": "${workspaceFolder}/24001182-km7-bhi-rental-ch3",
             "runtimeExecutable": "npm",
-            "runtimeArgs": [
-                "run-script", 
-                "dev"
-            ]
+            "runtimeArgs": ["run-script", "dev"]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Chapter 5",
+            "skipFiles": ["<node_internals>/**"],
+            // "program": "${workspaceFolder}/Chapter-3/Topik1_ExpressJS/index.js",
+            "cwd": "${workspaceFolder}/24001182-km7-bhi-rental-ch5",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": ["run-script", "dev"]
         }
     ]
 }
