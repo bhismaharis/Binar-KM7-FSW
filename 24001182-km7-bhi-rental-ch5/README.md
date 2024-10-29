@@ -1,14 +1,12 @@
 
 # Challenge 4 Binar - Rental Cars
 
-Pada Challenge 4 ini, kita membuat program Backend menggunakan ExpressJs dan NodeJs serta penggunaan database menggunakan Posgress SQL.
+Pada Challenge 5 ini, membuat membuat sebuah REST API yang dapat digunakan untuk melakukan manajemen data mobil dengan fitur authentication
 
 
 ## Authors
 
-- CRUD Cars Table : [@Michael Joenathan Darwin](https://github.com/MichaelJD-MJD)
-- CRUD Manufactures Table : [@Bhisma Haris Alfitrah](https://github.com/bhismaharis)
-- CRUD Types Table: [@David Vincent Gurning](https://github.com/davidgurning)
+- [@Bhisma Haris Alfitrah](https://github.com/bhismaharis)
 
 
 ## Run Locally
@@ -16,13 +14,13 @@ Pada Challenge 4 ini, kita membuat program Backend menggunakan ExpressJs dan Nod
 Clone the project
 
 ```bash
-  git clone https://github.com/MichaelJD-MJD/Kelompok7-Car-Management-Dashboard.git
+  git clone https://github.com/bhismaharis/Binar-KM7-FSW.git
 ```
 
 Go to the project directory
 
 ```bash
-  cd Kelompok7-Car-Management-Dashboard
+  cd Binar-KM7-FSW
 ```
 
 Install dependencies
@@ -35,6 +33,26 @@ Start the server
 
 ```bash
   npm run dev
+```
+
+Start database
+
+```bash
+  npm run prisma:refresh
+```
+
+## User Admin
+
+Email
+
+```bash
+  admin
+```
+
+Password
+
+```bash
+  admin
 ```
 
 
